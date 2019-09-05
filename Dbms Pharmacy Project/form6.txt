@@ -1,0 +1,50 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.OleDb;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace WindowsFormsApp6
+{
+    public partial class Form6 : Form
+    {
+        public Form6()
+        {
+            InitializeComponent();
+
+        }
+
+        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+        
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var newForm = new Form1();
+            newForm.Show();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            String connectionString = "Provider=OraOLEDB.Oracle;Data Source=orcl;User Id=bms;Password=bmscecse;";
+            OleDbConnection connection = new OleDbConnection(connectionString);
+            connection.Open();
+            string sql2 = "Insert into order11 VALUES ('" + textBox3.Text + "', '" + textBox4.Text + "', '" + textBox5.Text + "' )";
+
+            OleDbDataAdapter dataadapter = new OleDbDataAdapter(sql2, connection);
+
+            dataadapter.InsertCommand = new OleDbCommand(sql2, connection);
+            dataadapter.InsertCommand.ExecuteNonQuery();
+            MessageBox.Show("your medicine details and total amount are submitted! ");
+            connection.Close();
+        }
+    }
+
+}

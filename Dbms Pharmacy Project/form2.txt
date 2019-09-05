@@ -1,0 +1,61 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.OleDb;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace WindowsFormsApp6
+{
+    public partial class Form2 : Form
+    {
+        public Form2()
+        {
+            InitializeComponent();
+            textBox6.PasswordChar = '$';
+            textBox6.MaxLength = 10;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            String connectionString = "Provider=OraOLEDB.Oracle;Data Source=orcl;User Id=bms;Password=bmscecse;";
+            OleDbConnection connection = new OleDbConnection(connectionString);
+            connection.Open();
+            String sql1 = "select email from customers4";
+            OleDbCommand userCMD = new OleDbCommand(sql1, connection);
+            OleDbDataReader userReader = userCMD.ExecuteReader();
+            int flag = 0;
+            while (userReader.Read())
+            {
+                String email = userReader[0].ToString();
+                if (textBox3.Text == email)
+                {
+                    MessageBox.Show("You have already registered!!");
+                    flag = 1;
+                    break;
+
+                }
+            }
+            if (flag == 0)
+            {
+                string sql2 = "Insert into customers4 VALUES ('" + textBox1.Text + "', '" + textBox6.Text + "', '" + textBox2.Text + "','" + textBox3.Text + "', '" + textBox4.Text + "', '" + textBox5.Text + "' )";
+                OleDbDataAdapter dataadapter = new OleDbDataAdapter(sql2, connection);
+                dataadapter.InsertCommand = new OleDbCommand(sql2, connection);
+                dataadapter.InsertCommand.ExecuteNonQuery();
+                MessageBox.Show("You are registered successfully !! ");
+                connection.Close();
+            }
+
+
+        }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+
+        }
+    }
+}

@@ -1,0 +1,77 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.OleDb;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace WindowsFormsApp6
+{
+    public partial class Form1 : Form
+    {
+        
+
+        public Form1()
+        {
+            
+            InitializeComponent();
+            textBox2.PasswordChar = '$';
+            textBox2.MaxLength = 10;
+            
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            String connectionString = "Provider=OraOLEDB.Oracle;Data Source=orcl;User Id=bms;Password=bmscecse;";
+            OleDbConnection connection = new OleDbConnection(connectionString);
+            connection.Open();
+            String sql = "select * from customers4";
+            OleDbCommand userCMD = new OleDbCommand(sql, connection);
+            OleDbDataReader userReader = userCMD.ExecuteReader();
+            int flag = 0;
+            while (userReader.Read())
+            {
+                String cname = userReader[0].ToString();
+                String password = userReader[1].ToString();
+                if (textBox1.Text == cname && textBox2.Text == password)
+                {
+                    MessageBox.Show("Login successful");
+                    flag = 1;
+                    var newForm = new Form3();
+                    newForm.Show();
+                    break;
+                }
+            }
+            if (flag == 0)
+            {
+                MessageBox.Show("Invalid credentials-please try again");
+            }
+
+        }
+    
+   
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var newForm = new Form2();
+            newForm.Show();
+            
+            
+        }
+    }
+
+
+ OdbcDataAdapter mycon;
+            mycon.connectionString = "Driver ={ PostgreSQL ANSI}; database = payroll;server = 127.0.0.1; port = 5433;uid = postgres;sslmode=disable;readonly=0;protocol=7.4;User ID=admin;password=admin";
+            
+    
+            MessageBox.Show("Login Successfull");
+}
